@@ -9,6 +9,7 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
@@ -23,6 +24,7 @@ import ua.nedz.kotlindemo.cutlinks.services.KeyMapperService
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = arrayOf(CutlinksApplication::class))
 @WebAppConfiguration
+@TestPropertySource(locations = arrayOf("classpath:repositories-test.properties"))
 class RedirectControllerTest {
 
     @Autowired
