@@ -46,8 +46,6 @@ class RedirectControllerTest {
 
         Mockito.`when`(service.getLink(PATH)).thenReturn(KeyMapperService.Get.Link(HEADER_VALUE))
         Mockito.`when`(service.getLink(BAD_PATH)).thenReturn(KeyMapperService.Get.NotFound(BAD_PATH))
-
-        println(service.getLink(PATH))
     }
 
     private val PATH = "aAbBcCdD"
@@ -62,12 +60,12 @@ class RedirectControllerTest {
                 .andExpect(header().string(HEADER_NAME, HEADER_VALUE))
     }
 
-    private val BAD_PATH = "/olololo"
+    private val BAD_PATH = "olololo"
     private val NOT_FOUND = 404
 
     @Test
     fun controllerMustReturn404IfBadKey() {
-        mockMvc.perform(MockMvcRequestBuilders.get(BAD_PATH))
+        mockMvc.perform(MockMvcRequestBuilders.get("/$BAD_PATH"))
                 .andExpect(status().`is`(NOT_FOUND))
     }
 

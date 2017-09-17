@@ -1,24 +1,32 @@
 package ua.nedz.kotlindemo.cutlinks.services
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 
 @Component
 class DefaultKeyMapperService : KeyMapperService {
 
-    private val map: MutableMap<String, String> = ConcurrentHashMap()
+    @Autowired
+    lateinit var converter: KeyConverterService
 
-    override fun add(key: String, link: String) =
-            if (map.containsKey(key))
-                KeyMapperService.Add.AlreadyExist(key)
-            else {
-                map.put(key, link)
-                KeyMapperService.Add.Success(key, link)
-            }
+    val sequence = AtomicLong(10000000L)
 
-    override fun getLink(key: String) =
-            if (map[key] != null)
-                KeyMapperService.Get.Link(map[key]!!)
-            else
-                KeyMapperService.Get.NotFound(key)
+    private val map: MutableMap<Long, String> = ConcurrentHashMap()
+
+    override fun add(link: String): String {
+        val id = sequence.getAndIncrement()
+        val key = converter.idToKey(id)
+        map.put(id, link)
+        return key
+    }
+
+    override fun getLink(key: String): KeyMapperService.Get {
+        val id: Long = converter.keyToId(key)
+        return if (map[id] != null)
+            KeyMapperService.Get.Link(map[id]!!)
+        else
+            KeyMapperService.Get.NotFound(key)
+    }
 }
