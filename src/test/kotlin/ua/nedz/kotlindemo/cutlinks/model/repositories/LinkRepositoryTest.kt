@@ -4,13 +4,13 @@ import com.github.springtestdbunit.annotation.DatabaseOperation
 import com.github.springtestdbunit.annotation.DatabaseSetup
 import com.github.springtestdbunit.annotation.DatabaseTearDown
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.hasSize
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import ua.nedz.kotlindemo.cutlinks.model.AbstractRepositoryTest
-import java.util.*
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.hasSize
 import ua.nedz.kotlindemo.cutlinks.model.Link
+import java.util.*
 
 @DatabaseSetup(LinkRepositoryTest.DATASET)
 @DatabaseTearDown(type = DatabaseOperation.DELETE_ALL, value = LinkRepositoryTest.DATASET)

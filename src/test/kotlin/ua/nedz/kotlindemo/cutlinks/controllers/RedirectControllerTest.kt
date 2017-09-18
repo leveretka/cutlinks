@@ -13,7 +13,8 @@ import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -57,7 +58,7 @@ class RedirectControllerTest {
 
     @Test
     fun controllerMustRedirectUsWhenRequestIsSuccessful() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/$PATH"))
+        mockMvc.perform(get("/$PATH"))
                 .andExpect(status().`is`(REDIRECT_STATUS))
                 .andExpect(header().string(HEADER_NAME, HEADER_VALUE))
     }
@@ -67,9 +68,14 @@ class RedirectControllerTest {
 
     @Test
     fun controllerMustReturn404IfBadKey() {
-        mockMvc.perform(MockMvcRequestBuilders.get("/$BAD_PATH"))
+        mockMvc.perform(get("/$BAD_PATH"))
                 .andExpect(status().`is`(NOT_FOUND))
     }
 
+    @Test
+    fun homeWorksFine() {
+        mockMvc.perform(get("/"))
+                .andExpect(MockMvcResultMatchers.view().name("home"))
+    }
 
 }

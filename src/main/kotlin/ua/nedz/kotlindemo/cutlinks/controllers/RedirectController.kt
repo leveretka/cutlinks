@@ -8,13 +8,15 @@ import ua.nedz.kotlindemo.cutlinks.services.KeyMapperService
 import javax.servlet.http.HttpServletResponse
 
 @Controller
-@RequestMapping("/{key}")
 class RedirectController {
 
     @Autowired
     lateinit var service: KeyMapperService
 
-    @RequestMapping()
+    @RequestMapping("/")
+    fun home() = "home"
+
+    @RequestMapping("/{key}")
     fun redirect(@PathVariable("key") key: String, response: HttpServletResponse) {
         val getResult = service.getLink(key)
 

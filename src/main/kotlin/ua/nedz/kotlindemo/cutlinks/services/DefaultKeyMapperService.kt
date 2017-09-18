@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ua.nedz.kotlindemo.cutlinks.model.Link
 import ua.nedz.kotlindemo.cutlinks.model.repositories.LinkRepository
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicLong
 
 @Component
 class DefaultKeyMapperService : KeyMapperService {
