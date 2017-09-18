@@ -7,6 +7,10 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import ua.nedz.kotlindemo.cutlinks.model.Link
+import ua.nedz.kotlindemo.cutlinks.model.repositories.LinkRepository
+import ua.nedz.kotlindemo.cutlinks.whenever
+import java.util.*
 
 class DefaultKeyMapperServiceTest {
 
@@ -15,6 +19,9 @@ class DefaultKeyMapperServiceTest {
 
     @Mock
     lateinit var converter: KeyConverterService
+
+    @Mock
+    lateinit var repository: LinkRepository
 
     private val KEY = "aAbBcCdD"
 
@@ -26,6 +33,9 @@ class DefaultKeyMapperServiceTest {
     private val ID_A = 10000000L
     private val ID_B = 10000001L
 
+    private val LINK_OBJ_A = Link(LINK_A, ID_A)
+    private val LINK_OBJ_B = Link(LINK_B, ID_B)
+
     @Before
     fun init() {
         MockitoAnnotations.initMocks(this)
@@ -34,6 +44,12 @@ class DefaultKeyMapperServiceTest {
         Mockito.`when`(converter.keyToId(KEY_B)).thenReturn(ID_B)
         Mockito.`when`(converter.idToKey(ID_A)).thenReturn(KEY_A)
         Mockito.`when`(converter.idToKey(ID_B)).thenReturn(KEY_B)
+
+        whenever(repository.findOne(Mockito.anyObject())).thenReturn(Optional.empty())
+        whenever(repository.save(Link(LINK_A))).thenReturn(LINK_OBJ_A)
+        whenever(repository.save(Link(LINK_B))).thenReturn(LINK_OBJ_B)
+        whenever(repository.findOne(ID_A)).thenReturn(Optional.of(LINK_OBJ_A))
+        whenever(repository.findOne(ID_B)).thenReturn(Optional.of(LINK_OBJ_B))
     }
 
     @Test
